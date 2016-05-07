@@ -201,21 +201,23 @@ streznik.post('/prijava', function(zahteva, odgovor) {
   
   form.parse(zahteva, function (napaka1, polja, datoteke) {
     var napaka2 = false;
-    try {
-      var stmt = pb.prepare("\
-        INSERT INTO Customer \
-    	  (FirstName, LastName, Company, \
-    	  Address, City, State, Country, PostalCode, \
-    	  Phone, Fax, Email, SupportRepId) \
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
-      if (polja.FirstName != "" && polja.LastName != "" && polja.Address != "" && polja.City != "" && polja.Country != "" && polja.PostalCode != "" && polja.Phone != "" && polja.Email != ""){
-        stmt.run(polja.FirstName, polja.LastName, polja.Company, polja.Address, polja.City, polja.State, polja.Country, polja.PostalCode, polja.Phone, polja.Fax, polja.Email, 3); 
-        stmt.finalize();
+    if (polja.FirstName != "" && polja.LastName != "" && polja.Address != "" && polja.City != "" && polja.Country != "" && polja.PostalCode != "" && polja.Phone != "" && polja.Email != ""){
+      try {
+        var stmt = pb.prepare("\
+          INSERT INTO Customer \
+      	  (FirstName, LastName, Company, \
+      	  Address, City, State, Country, PostalCode, \
+      	  Phone, Fax, Email, SupportRepId) \
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+        
+          stmt.run(polja.FirstName, polja.LastName, polja.Company, polja.Address, polja.City, polja.State, polja.Country, polja.PostalCode, polja.Phone, polja.Fax, polja.Email, 3); 
+          stmt.finalize();
+        
+      } catch (err) {
+        napaka2 = true;
       }
-      else napaka2 = true;
-    } catch (err) {
-      napaka2 = true;
     }
+    else napaka2 = true;
   
     vrniStranke(function(napaka3, stranke){
       vrniRacune(function(napaka4, racuni){
