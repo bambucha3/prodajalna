@@ -271,11 +271,7 @@ streznik.post('/stranka', function(zahteva, odgovor) {
   var form = new formidable.IncomingForm();
   
   form.parse(zahteva, function (napaka1, polja, datoteke) {
-<<<<<<< HEAD
-    zahteva.session.currentUser = 1;
-=======
     zahteva.session.currentUser = polja.seznamStrank;
->>>>>>> prikaz-racuna-trenutni
     odgovor.redirect('/')
   });
 })
